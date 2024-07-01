@@ -1,0 +1,9 @@
+python codes/pipeline.py --streaming --runner DataflowRunner \
+  --project <PROJECT_ID> \
+  --temp_location gs://<BUCKET>/temp \
+  --staging_location gs://<BUCKET>/temp/staging \
+  --region us-central1 \
+  --job_name tweets
+
+
+python codes/fake_tweets.py
