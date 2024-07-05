@@ -14,8 +14,8 @@ def run():
     parser = argparse.ArgumentParser(description='Convert Json into BigQuery using Schemas')
     parser.add_argument('--project',required=True, help='Specify Google Cloud project')
     parser.add_argument('--region', required=True, help='Specify Google Cloud region')
-    parser.add_argument('--stagingLocation', required=True, help='Specify Cloud Storage bucket for staging')
-    parser.add_argument('--tempLocation', required=True, help='Specify Cloud Storage bucket for temp')
+    parser.add_argument('--staging_location', required=True, help='Specify Cloud Storage bucket for staging')
+    parser.add_argument('--temp_location', required=True, help='Specify Cloud Storage bucket for temp')
     parser.add_argument('--runner', required=True, help='Specify Apache Beam Runner')
 
     opts = parser.parse_args()
@@ -24,16 +24,15 @@ def run():
     options = PipelineOptions()
     options.view_as(GoogleCloudOptions).project = opts.project
     options.view_as(GoogleCloudOptions).region = opts.region
-    options.view_as(GoogleCloudOptions).staging_location = opts.stagingLocation
-    options.view_as(GoogleCloudOptions).temp_location = opts.tempLocation
-    options.view_as(GoogleCloudOptions).job_name = '{0}-{1}'.format(opts.job_name,time.time_ns())
+    options.view_as(GoogleCloudOptions).staging_location = opts.staging_location
+    options.view_as(GoogleCloudOptions).temp_location = opts.temp_location
+    options.view_as(GoogleCloudOptions).job_name = '{0}-{1}'.format('load-json-to-bq',time.time_ns())
     options.view_as(StandardOptions).runner = opts.runner
 
     #static input and output strings
-    input = 'gs://{0}/events.json'.format(opts.project)
+    input = 'gs://{0}/data/events.json'.format(opts.project)
     output = '{0}:logs.logs'.format(opts.project)
     
-    # Table schema for BigQuery
     # Table schema for BigQuery
     table_schema = {
         "fields": [
@@ -81,11 +80,11 @@ def run():
     (p
      |'ReadFromGCS' >> beam.io.ReadFromText(input)
      |'ParseJson' >> beam.Map(lambda line: json.loads(line))
-     |'WriteToBQ' >> beam.io.Write(
+     |'WriteToBQ' >> beam.io.WriteToBigQuery(
                        output,
                        schema = table_schema,
                        create_disposition = beam.io.BigQueryDisposition.CREATE_IF_NEEDED,
-                       write.disposition = beam.io.BigQueryDisposition.WRITE_TRUNCATE
+                       write_disposition = beam.io.BigQueryDisposition.WRITE_TRUNCATE
               )
     )
 
