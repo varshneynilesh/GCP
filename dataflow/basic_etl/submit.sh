@@ -1,6 +1,5 @@
-  python pipeline.py --project <YOUR_PROJECT_NAME> \
+  python pipeline.py --project <PROJECT_ID> \
   --region us-central1 \
-  --staging_location gs://<YOUR_BUCKET_NAME>/staging \
-  --temp_location gs://<YOUR_BUCKET_NAME>/temp \
-  --job_name load_json_to_bq
+  --staging_location gs://<GCS_BUCKET_ID>/staging \
+  --temp_location gs://<GCS_BUCKET_ID>/temp \
   --runner DataflowRunner
