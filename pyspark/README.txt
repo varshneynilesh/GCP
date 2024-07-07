@@ -5,3 +5,6 @@ cloud dataproc clusters create bluesea --region=us-central1 --zone=us-central1-f
 
 -- run flight_airlines_dataload
 gcloud dataproc jobs submit pyspark flight_airlines_dataload.py --cluster=bluesea --region=us-central1
+
+-- run soccer
+gcloud dataproc jobs submit pyspark soccer.py --cluster=bluesea --region=us-central1
