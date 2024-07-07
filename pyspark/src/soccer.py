@@ -60,7 +60,7 @@ players_attr = (
                     'finishing',
                     'acceleration'
     )
-    .withcolumn("year", extract_year_udf(players_attr.date))
+    .withColumn("year", extract_year_udf(players_attr.date))
     .filter(f.col("year") == 2016)
     .drop(players_attr.date)
 )
