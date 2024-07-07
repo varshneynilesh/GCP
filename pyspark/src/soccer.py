@@ -8,7 +8,7 @@ PROJECT = "<PROJECT_ID>"
 GCS_DATA_BUCKET = "<BUCKET_ID>"
 
 player_data = "gs://{}/data/player.csv".format(GCS_DATA_BUCKET)
-player_attr_data = "gs://{}/data/player_attributes.csv".format(GCS_DATA_BUCKET)
+player_attr_data = "gs://{}/data/player_attributes*.csv".format(GCS_DATA_BUCKET)
 
 def read_csv(spark_session: SparkSession, source_location:str) -> None:
     df = spark_session.read.csv(path=source_location, header=True)
