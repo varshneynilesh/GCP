@@ -8,7 +8,7 @@ export RUNNER=DataflowRunner
 export INPUT_PATH=${PIPELINE_FOLDER}/events.json
 export TABLE_NAME=${PROJECT_ID}:logs.user_traffic
 
-python3 src/user_traffic.pipeline.py \
+python3 src/user_traffic_pipeline.py \
 --project=${PROJECT_ID} \
 --region=${REGION} \
 --staging_location=${PIPELINE_FOLDER}/staging \
