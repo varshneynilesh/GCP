@@ -31,7 +31,7 @@ def parse_json(element):
     return CommonLog(**row)
 
 def add_timestamp(element):
-    ts = datetime.strptime(element.timestamp[:8], "%Y-%m-%dT%H:%M:%S").timestamp()
+    ts = datetime.strptime(element.timestamp[:-8], "%Y-%m-%dT%H:%M:%S").timestamp()
     return beam.window.TimestampedValue(element, ts)
 
 class GetTimestampFn(beam.DoFn):
