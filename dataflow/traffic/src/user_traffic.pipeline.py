@@ -97,7 +97,7 @@ def run():
      |'ReadFromGCS' >> beam.io.ReadFromText(input_path)
      |'ParseJson' >> beam.Map(parse_json).with_output_types(CommonLog)
      |'PerUserAggregations' >> beam.GroupBy('user_id')
-        .aggregate_field('user_id', CountCombineFn(), 'page_view')
+        .aggregate_field('user_id', CountCombineFn(), 'page_views')
         .aggregate_field('num_bytes', sum, 'total_bytes')
         .aggregate_field('num_bytes', max, 'max_bytes')
         .aggregate_field('num_bytes', min, 'min_bytes')
