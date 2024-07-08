@@ -92,7 +92,7 @@ def run():
         ]
     }
 
-    p = beam.Pipeline(options)
+    p = beam.Pipeline(options=options)
     (p
      |'ReadFromGCS' >> beam.io.ReadFromText(input_path)
      |'ParseJson' >> beam.Map(parse_json).with_output_types(CommandLog)
