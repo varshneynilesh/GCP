@@ -27,7 +27,7 @@ class CommonLog(typing.NamedTuple):
 beam.coders.registry.register_coder(CommonLog, beam.coders.RowCoder)
 
 def parse_json(element):
-    row = json.dumps(element)
+    row = json.loads(element)
     return CommonLog(**row)
 
 def add_timestamp(element):
