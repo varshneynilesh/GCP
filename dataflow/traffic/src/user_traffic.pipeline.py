@@ -12,7 +12,7 @@ from apache_beam.runners import DataflowRunner, DirectRunner
 from apache_beam.transforms.combiners import CountCombineFn
 
 
-class CommandLog(typing.NamedTuple):
+class CommonLog(typing.NamedTuple):
     ip: str
     user_id: str
     lat: float
@@ -23,7 +23,7 @@ class CommandLog(typing.NamedTuple):
     num_bytes: int
     user_agent: str
 
-beam.coders.registry.register_coder(CommandLog, beam.coders.RowCoder)
+beam.coders.registry.register_coder(CommonLog, beam.coders.RowCoder)
    
 class PerUserAggregation(typing.NamedTuple):
     user_id: str
@@ -35,8 +35,8 @@ class PerUserAggregation(typing.NamedTuple):
 beam.coders.registry.register_coder(PerUserAggregation, beam.coders.RowCoder)
 
 def parse_json(element):
-   row = json.dumps(element)
-   return CommandLog(**row)
+   row = json.loads(element)
+   return CommonLog(**row)
  
 def to_dict(element):
    return element._asdict()
@@ -95,7 +95,7 @@ def run():
     p = beam.Pipeline(options=options)
     (p
      |'ReadFromGCS' >> beam.io.ReadFromText(input_path)
-     |'ParseJson' >> beam.Map(parse_json).with_output_types(CommandLog)
+     |'ParseJson' >> beam.Map(parse_json).with_output_types(CommonLog)
      |'PerUserAggregations' >> beam.GroupBy('user_id')
         .aggregate_field('user_id', CountCombineFn(), 'page_view')
         .aggregate_field('num_bytes', sum, 'total_bytes')
