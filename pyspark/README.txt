@@ -8,3 +8,6 @@ gcloud dataproc jobs submit pyspark flight_airlines_dataload.py --cluster=bluese
 
 -- run soccer
 gcloud dataproc jobs submit pyspark soccer.py --cluster=bluesea --region=us-central1
+
+-- run products
+gcloud dataproc jobs submit pyspark products.py  --cluster=bluesea --region=us-central1
